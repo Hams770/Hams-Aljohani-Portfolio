@@ -413,20 +413,193 @@
             max-width: 34ch;
         }
 
-        .edu {
+        .about p.lead + p.lead { margin-top: 20px; }
+
+        /* Model card */
+        .model-card {
             background: var(--violet);
             color: var(--paper);
             border-radius: var(--radius-lg);
             padding: 32px;
+            box-shadow: 14px 14px 0 var(--lilac);
+            transform: rotate(1.5deg);
         }
 
-        .edu h3 {
-            margin: 0 0 6px;
+        .model-card h3 {
+            margin: 0 0 4px;
             font-size: 28px;
             line-height: 1.15;
         }
 
-        .edu p { margin: 0; color: var(--mist); }
+        .model-card .card-note {
+            margin: 0 0 22px;
+            color: var(--mist);
+            font-size: 16px;
+        }
+
+        .model-card dl {
+            margin: 0;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px 20px;
+        }
+
+        .model-card dt {
+            color: var(--lilac);
+            font-size: 15px;
+            padding-top: 2px;
+        }
+
+        .model-card dd {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .meter {
+            display: block;
+            height: 8px;
+            margin-top: 8px;
+            border-radius: 99px;
+            background: rgba(243, 238, 255, 0.25);
+            overflow: hidden;
+        }
+
+        .meter span {
+            display: block;
+            height: 100%;
+            width: 100%;
+            border-radius: inherit;
+            background: var(--orchid);
+            transform-origin: left;
+            animation: fill-up 2.4s ease-in-out infinite alternate;
+        }
+
+        @keyframes fill-up { from { transform: scaleX(0.55); } to { transform: scaleX(0.9); } }
+
+        /* ---------- Hero network background ---------- */
+        .hero { isolation: isolate; }
+
+        .hero-net {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* ---------- Welcome screen ---------- */
+        body.locked { overflow: hidden; }
+
+        main:focus { outline: none; }
+
+        .splash {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--plum);
+            color: var(--paper);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 24px;
+            clip-path: circle(150% at 50% 50%);
+            transition: clip-path 1s cubic-bezier(.7, 0, .2, 1);
+        }
+
+        .splash.closing { clip-path: circle(0% at var(--cx, 50%) var(--cy, 50%)); }
+
+        .splash canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .splash-inner { position: relative; max-width: 760px; }
+
+        .splash .hello {
+            margin: 0;
+            font-size: clamp(20px, 3vw, 28px);
+            color: var(--lilac);
+        }
+
+        .splash .name {
+            margin: 0;
+            font-size: clamp(80px, 18vw, 220px);
+            line-height: 0.9;
+            font-weight: 800;
+            font-stretch: 80%;
+            letter-spacing: -0.05em;
+        }
+
+        .typed {
+            min-height: 2.6em;
+            margin: 18px auto 34px;
+            font-size: clamp(20px, 2.6vw, 26px);
+            line-height: 1.3;
+        }
+
+        .typed .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            margin-left: 3px;
+            vertical-align: -0.12em;
+            background: var(--orchid);
+            animation: blink 1s steps(1) infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .enter {
+            font: inherit;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 18px 36px;
+            border: 0;
+            border-radius: 999px;
+            background: var(--lilac);
+            color: var(--plum);
+            cursor: pointer;
+            box-shadow: 0 0 0 0 rgba(255, 95, 162, 0.7);
+            animation: pulse 2.2s ease-out infinite;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .enter:hover { background: var(--orchid); color: #fff; transform: scale(1.04); }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 95, 162, 0.6); }
+            100% { box-shadow: 0 0 0 22px rgba(255, 95, 162, 0); }
+        }
+
+        .skip {
+            display: block;
+            margin: 18px auto 0;
+            font: inherit;
+            font-size: 15px;
+            background: none;
+            border: 0;
+            color: var(--lilac);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            cursor: pointer;
+        }
+
+        /* Page reveal after the welcome screen */
+        .reveal main > .hero h1 { animation: rise 0.9s 0.35s both cubic-bezier(.2, .7, .2, 1); }
+        .reveal main > .hero .hero-body { animation: rise 0.9s 0.55s both cubic-bezier(.2, .7, .2, 1); }
+
+        @keyframes rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .splash { transition: opacity 0.4s; }
+            .splash.closing { clip-path: circle(150% at 50% 50%); opacity: 0; }
+            .enter, .typed .cursor, .meter span { animation: none; }
+            .reveal main > .hero h1, .reveal main > .hero .hero-body { animation: none; }
+        }
 
         /* ---------- Contact ---------- */
         .contact {
@@ -472,7 +645,8 @@
         /* ---------- Responsive ---------- */
         @media (max-width: 960px) {
             .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .about { grid-template-columns: 1fr; gap: 32px; }
+            .about { grid-template-columns: 1fr; gap: 40px; }
+            .model-card { transform: none; box-shadow: 8px 8px 0 var(--lilac); }
         }
 
         @media (max-width: 720px) {
@@ -510,17 +684,30 @@
     </nav>
 </header>
 
-<main id="top">
+<div class="splash" id="splash" role="dialog" aria-modal="true" aria-labelledby="splash-name">
+    <canvas id="splash-net" aria-hidden="true"></canvas>
+    <div class="splash-inner">
+        <p class="hello">Hello, I'm</p>
+        <p class="name" id="splash-name">Hams</p>
+        <p class="typed" aria-live="polite"><span id="typed-text"></span><span class="cursor" aria-hidden="true"></span></p>
+        <button class="enter" id="enter" type="button">Open my portfolio</button>
+        <button class="skip" id="skip" type="button">Skip intro</button>
+    </div>
+</div>
+
+<main id="top" tabindex="-1">
 
     <section class="hero wrap" aria-label="Introduction">
+        <canvas class="hero-net" id="hero-net" aria-hidden="true"></canvas>
         <h1>Hams <span class="second">Al Johani</span></h1>
 
         <div class="hero-body">
             <div>
                 <p class="intro">
-                    Computer Science student on the AI track at Effat University. I train models
-                    that spot fake news, predict patient risk and catch attackers hiding inside
-                    federated learning, then build the apps that let people try them.
+                    I'm an AI student who still gets excited every time a model learns something
+                    new. I'm studying Computer Science on the Artificial Intelligence track at
+                    Effat University, and I'm learning to build AI that is smart, fair and
+                    worth trusting.
                 </p>
                 <div class="buttons">
                     <a class="btn btn-primary" href="#projects">See my projects</a>
@@ -744,17 +931,33 @@
             <div>
                 <h2 id="about-title">About me</h2>
                 <p class="lead">
-                    I'm drawn to the question every AI system eventually has to answer: what happens
-                    when the data is messy, noisy or even hostile? My projects keep coming back to it,
-                    from noisy medical records to fake news and poisoned federated clients.
-                    I work across the whole path, from Spark pipelines and model training to the
-                    interfaces people actually use.
+                    Every AI model comes with a model card: a short sheet that says what it was
+                    trained on, what it's good at and where it's still learning.
+                    So here is mine.
+                </p>
+                <p class="lead">
+                    I chose the AI track because I love questions without easy answers. How does a
+                    machine learn to read? When should we trust what it says? I'm still finding out,
+                    and that's my favorite part.
                 </p>
             </div>
-            <div class="edu">
-                <h3>Effat University</h3>
-                <p>Bachelor of Computer Science, Artificial Intelligence track</p>
-                <p>Expected graduation: 2027</p>
+            <div class="model-card">
+                <h3>Model card: Hams Al Johani</h3>
+                <p class="card-note">Version: Class of 2027</p>
+                <dl>
+                    <dt>Trained at</dt>
+                    <dd>Effat University, Jeddah</dd>
+                    <dt>Major</dt>
+                    <dd>Computer Science, Artificial Intelligence track</dd>
+                    <dt>Specialties</dt>
+                    <dd>Machine learning, NLP, AI security, big data</dd>
+                    <dt>Runs on</dt>
+                    <dd>Curiosity, patience and a lot of debugging</dd>
+                    <dt>Intended use</dt>
+                    <dd>Building AI that people can trust</dd>
+                    <dt>Training progress</dt>
+                    <dd>Still learning<span class="meter" aria-hidden="true"><span></span></span></dd>
+                </dl>
             </div>
         </div>
     </section>
@@ -816,6 +1019,131 @@
 </main>
 
 <script>
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // ---------- Moving neural network (canvas) ----------
+    function network(canvas, opts) {
+        const ctx = canvas.getContext("2d");
+        let w, h, nodes = [], running = true;
+
+        function resize() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            w = canvas.clientWidth; h = canvas.clientHeight;
+            canvas.width = w * dpr; canvas.height = h * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const count = Math.round(Math.min(opts.max, (w * h) / opts.density));
+            nodes = Array.from({ length: count }, () => ({
+                x: Math.random() * w, y: Math.random() * h,
+                vx: (Math.random() - 0.5) * opts.speed, vy: (Math.random() - 0.5) * opts.speed,
+                r: 1.5 + Math.random() * 2.5
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            for (let i = 0; i < nodes.length; i++) {
+                const a = nodes[i];
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const b = nodes[j];
+                    const d = Math.hypot(a.x - b.x, a.y - b.y);
+                    if (d < opts.link) {
+                        ctx.strokeStyle = `rgba(${opts.line}, ${(1 - d / opts.link) * 0.6})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+                    }
+                }
+            }
+            nodes.forEach((n) => {
+                ctx.fillStyle = n.r > 3.5 ? opts.accent : opts.dot;
+                ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+            });
+        }
+
+        function step() {
+            if (!running) return;
+            nodes.forEach((n) => {
+                n.x += n.vx; n.y += n.vy;
+                if (n.x < 0 || n.x > w) n.vx *= -1;
+                if (n.y < 0 || n.y > h) n.vy *= -1;
+            });
+            draw();
+            requestAnimationFrame(step);
+        }
+
+        resize();
+        window.addEventListener("resize", () => { resize(); if (reduceMotion) draw(); });
+        if (reduceMotion) draw(); else requestAnimationFrame(step);
+        return { stop() { running = false; } };
+    }
+
+    network(document.getElementById("hero-net"), {
+        max: 60, density: 16000, speed: 0.35, link: 130,
+        line: "107, 47, 217", dot: "rgba(107, 47, 217, 0.5)", accent: "rgba(255, 95, 162, 0.7)"
+    });
+
+    // ---------- Welcome screen ----------
+    const splash = document.getElementById("splash");
+    const typedEl = document.getElementById("typed-text");
+    const enterBtn = document.getElementById("enter");
+    const skipBtn = document.getElementById("skip");
+    let splashNet = null;
+
+    const lines = [
+        "an AI student who teaches machines to learn.",
+        "a Computer Science major on the AI track.",
+        "curious about how machines think.",
+        "building AI that people can trust."
+    ];
+
+    function startSplash() {
+        document.body.classList.add("locked");
+        splashNet = network(document.getElementById("splash-net"), {
+            max: 110, density: 9000, speed: 0.5, link: 150,
+            line: "205, 184, 255", dot: "rgba(205, 184, 255, 0.85)", accent: "#ff5fa2"
+        });
+
+        if (reduceMotion) { typedEl.textContent = lines[0]; return; }
+
+        let line = 0, char = 0, deleting = false;
+        (function type() {
+            if (!splash.isConnected) return;
+            const text = lines[line];
+            typedEl.textContent = text.slice(0, char);
+            if (!deleting && char < text.length) { char++; setTimeout(type, 45); }
+            else if (!deleting) { deleting = true; setTimeout(type, 1600); }
+            else if (char > 0) { char--; setTimeout(type, 22); }
+            else { deleting = false; line = (line + 1) % lines.length; setTimeout(type, 300); }
+        })();
+        enterBtn.focus();
+    }
+
+    function openPortfolio(fromButton) {
+        if (fromButton) {
+            const r = enterBtn.getBoundingClientRect();
+            splash.style.setProperty("--cx", `${r.left + r.width / 2}px`);
+            splash.style.setProperty("--cy", `${r.top + r.height / 2}px`);
+        }
+        splash.classList.add("closing");
+        document.body.classList.remove("locked");
+        document.body.classList.add("reveal");
+        try { sessionStorage.setItem("introSeen", "1"); } catch (e) {}
+        setTimeout(() => {
+            if (splashNet) splashNet.stop();
+            splash.remove();
+            document.getElementById("top").focus({ preventScroll: true });
+        }, reduceMotion ? 400 : 1000);
+    }
+
+    let seen = false;
+    try { seen = sessionStorage.getItem("introSeen") === "1"; } catch (e) {}
+    if (seen) { splash.remove(); } else { startSplash(); }
+
+    enterBtn.addEventListener("click", () => openPortfolio(true));
+    skipBtn.addEventListener("click", () => openPortfolio(false));
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && splash.isConnected) openPortfolio(false);
+    });
+
     // Project filters
     const buttons = document.querySelectorAll(".filters button");
     const projects = document.querySelectorAll(".project");
